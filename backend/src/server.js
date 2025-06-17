@@ -1,16 +1,21 @@
 const express = require("express");
+const { adminAuth, userAuth } = require("./middleware/auth.js");
 
 const app = express();
 
-app.get("/user", (req, res) => {
-  res.send({ firstName: "Dhiman", lastName: "Majumdar" });
+// handle auth middleware for all requests types
+app.use("/admin", adminAuth);
+
+app.post("/user/login", (req, res) => {
+  res.send("user logged in success!!");
 });
 
-app.post("/user", (req, res) => {
-  res.send("Saving data to db");
+app.get("/user/data", userAuth, (req, res) => {
+  res.send("user data sent");
 });
-app.use("/test", (req, res) => {
-  res.send("test from the server");
+
+app.get("/admin/getAllData", (req, res) => {
+  res.send("All Data Sent");
 });
 
 app.listen(7777, () => {
