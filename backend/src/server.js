@@ -12,7 +12,7 @@ app.post("/signup", async (req, res) => {
     await user.save();
     res.send("User added successfully!!");
   } catch (error) {
-    res.status(400).send("Error saving the user data", error.message);
+    res.status(400).send("Error saving the user data" + error.message);
   }
 
   // creating a new instance of the User model
@@ -62,14 +62,30 @@ app.delete("/user", async (req, res) => {
   }
 });
 
-app.patch("/user", async (req, res) => {
-  const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params?.userId;
   const data = req.body;
+
   try {
-    await User.findByIdAndUpdate({ _id: userId }, data);
+    const ALLOWED_UPDATES = ["photoUrl", "skills", "age", "about"];
+
+    const isUpdatedAllowed = Object.keys(data).every((k) =>
+      ALLOWED_UPDATES.includes(k)
+    );
+
+    if (!isUpdatedAllowed) {
+      throw new Error("Update Not allowed");
+    }
+    if (data.skills && data?.skills.length > 10) {
+      throw new Error("Skills shouldn't be more than 10");
+    }
+    await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
     res.send("User updated successfully");
   } catch (error) {
-    res.status(400).send("Something went wrong!!");
+    res.status(400).send("Something went wrong!!" + error.message);
   }
 });
 
