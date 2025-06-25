@@ -96,6 +96,12 @@ app.get("/user", async (req, res) => {
 });
 
 // sending a connection request
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+  // sending a connection request
+  const user = req.user;
+  console.log("Sending a Connection request");
+  res.send("Connection Request sent by:" + user.firstName);
+});
 
 connectDB()
   .then(() => {
