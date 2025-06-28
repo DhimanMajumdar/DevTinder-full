@@ -44,4 +44,21 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
   }
 });
 
+profileRouter.delete("/profile/delete", userAuth, async (req, res) => {
+  try {
+    const loggedInUserId = req.user._id;
+
+    const deletedUser = await User.findByIdAndDelete(loggedInUserId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
+
 module.exports = profileRouter;
