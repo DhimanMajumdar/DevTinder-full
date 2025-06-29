@@ -10,17 +10,24 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { removeUser } from "../utils/userSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const handleLogout = () => {
-    // Add your logout logic here
-    console.log("Logging out...");
-    // dispatch(logoutAction());
-    // navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+      dispatch(removeUser());
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
