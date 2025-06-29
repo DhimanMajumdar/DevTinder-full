@@ -149,7 +149,7 @@ const Connections = () => {
               : "Connect with other professionals to build your network"}
           </p>
           <Link
-            to="/discover"
+            to="/feed"
             className="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl text-white hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-blue-500/20"
           >
             Discover Professionals
