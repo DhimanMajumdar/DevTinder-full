@@ -49,12 +49,27 @@ const userSchema = new mongoose.Schema(
     },
     photoUrl: {
       type: String,
-      default:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fdefault-profile-picture&psig=AOvVaw0qJvxSvkrDQmqofB2_wIOr&ust=1750339065790000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNDJlqqH-40DFQAAAAAdAAAAABAK",
+      default: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
       validate(value) {
         if (!validator.isURL(value)) {
           throw new Error("Photo URL is not valid" + value);
         }
+      },
+    },
+    linkdlnUrl: {
+      type: String,
+      default: "",
+      validate: {
+        validator: (value) => !value || value === "" || validator.isURL(value),
+        message: "Invalid Linkdln URL",
+      },
+    },
+    GithubUrl: {
+      type: String,
+      default: "",
+      validate: {
+        validator: (value) => !value || value === "" || validator.isURL(value),
+        message: "Invalid Github URL",
       },
     },
     about: {

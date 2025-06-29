@@ -2,22 +2,27 @@ import { useNavigate } from "react-router-dom";
 import { X, Code, Mail, Key } from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { BASE_URL } from "../utils/constants";
 
 const LoginModal = () => {
   const navigate = useNavigate();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent page reload
 
     try {
       const res = await axios.post(
-        "http://localhost:7777/login",
+        BASE_URL + "/login",
         { emailId, password },
         { withCredentials: true } // Important for cookies
       );
       console.log(res.data);
+      dispatch(addUser(res.data));
       navigate("/profile"); // Redirect after successful login
     } catch (error) {
       console.log(error.response?.data || error.message);
