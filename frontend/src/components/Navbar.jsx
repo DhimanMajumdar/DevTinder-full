@@ -13,9 +13,15 @@ import { useState } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleLogout = () => {
+    // Add your logout logic here
+    console.log("Logging out...");
+    // dispatch(logoutAction());
+    // navigate("/login");
+  };
 
   return (
     <nav className="fixed top-0 w-full bg-gray-900/90 backdrop-blur-lg border-b border-gray-700/50 z-50">
@@ -68,6 +74,16 @@ const Navbar = () => {
                       />
                       <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-400 group-hover:text-green-300 transition-all opacity-0 group-hover:opacity-100">
                         Requests
+                      </span>
+                    </div>
+
+                    <div className="relative group">
+                      <LogOut
+                        className="h-6 w-6 text-gray-300 hover:text-red-400 cursor-pointer transition-all transform group-hover:scale-110"
+                        onClick={handleLogout}
+                      />
+                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-400 group-hover:text-red-300 transition-all opacity-0 group-hover:opacity-100">
+                        Logout
                       </span>
                     </div>
                   </div>
@@ -143,7 +159,10 @@ const Navbar = () => {
                           <GitPullRequest className="h-4 w-4 mr-3 text-green-400" />
                           Requests
                         </button>
-                        <button className="flex items-center w-full px-4 py-3 text-sm text-red-400 hover:bg-gray-700/50 transition-colors">
+                        <button
+                          className="flex items-center w-full px-4 py-3 text-sm text-red-400 hover:bg-gray-700/50 transition-colors"
+                          onClick={handleLogout}
+                        >
                           <LogOut className="h-4 w-4 mr-3 text-red-400" />
                           Logout
                         </button>
