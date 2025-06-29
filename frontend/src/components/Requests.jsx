@@ -3,15 +3,7 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addRequests, removeRequest } from "../utils/requestSlice";
 import { useEffect, useState } from "react";
-import {
-  User,
-  Users,
-  Clock,
-  X,
-  Check,
-  MessageSquare,
-  MoreHorizontal,
-} from "lucide-react";
+import { Users, Clock, X, Check } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -26,7 +18,7 @@ const Requests = () => {
     try {
       setProcessingId(_id);
       await axios.post(
-        BASE_URL + "/request/review/" + status + "/" + _id,
+        `${BASE_URL}/request/review/${status}/${_id}`,
         {},
         { withCredentials: true }
       );
@@ -42,7 +34,7 @@ const Requests = () => {
   const fetchRequests = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(BASE_URL + "/user/requests/received", {
+      const res = await axios.get(`${BASE_URL}/user/requests/received`, {
         withCredentials: true,
       });
       dispatch(addRequests(res.data.data));
@@ -58,6 +50,19 @@ const Requests = () => {
     fetchRequests();
   }, []);
 
+  const formatTime = (dateString) => {
+    const now = new Date();
+    const createdDate = new Date(dateString);
+    const diff = (now - createdDate) / (1000 * 60 * 60 * 24);
+
+    if (diff < 1) return "Today";
+    if (diff < 2) return "Yesterday";
+    if (diff < 7) return `${Math.floor(diff)} days ago`;
+    if (diff < 30) return `${Math.floor(diff / 7)} weeks ago`;
+    if (diff < 365) return `${Math.floor(diff / 30)} months ago`;
+    return `${Math.floor(diff / 365)} years ago`;
+  };
+
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
@@ -67,24 +72,23 @@ const Requests = () => {
           </h1>
           <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
         </div>
-
         <div className="space-y-6">
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
               className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center space-x-4">
-                  <Skeleton circle width={72} height={72} />
+                  <Skeleton circle width={64} height={64} />
                   <div>
-                    <Skeleton width={160} height={24} className="mb-2" />
-                    <Skeleton width={120} height={16} />
+                    <Skeleton width={140} height={20} className="mb-2" />
+                    <Skeleton width={100} height={14} />
                   </div>
                 </div>
-                <div className="flex space-x-3">
-                  <Skeleton width={80} height={40} className="rounded-lg" />
-                  <Skeleton width={80} height={40} className="rounded-lg" />
+                <div className="flex flex-wrap gap-3">
+                  <Skeleton width={80} height={36} className="rounded-lg" />
+                  <Skeleton width={80} height={36} className="rounded-lg" />
                 </div>
               </div>
             </div>
@@ -96,7 +100,7 @@ const Requests = () => {
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 flex flex-col items-center justify-center text-center">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 flex flex-col items-center text-center">
         <div className="bg-gradient-to-br from-red-900/30 to-red-800/20 p-8 rounded-xl border border-red-800/50">
           <h2 className="text-2xl font-bold text-white mb-3">
             Error Loading Requests
@@ -115,7 +119,7 @@ const Requests = () => {
 
   if (!requests || requests.length === 0) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 flex flex-col items-center justify-center text-center">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 flex flex-col items-center text-center">
         <div className="p-8 bg-gray-800/50 rounded-xl border border-gray-700/50">
           <Users className="h-16 w-16 text-gray-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-2">
@@ -147,14 +151,14 @@ const Requests = () => {
           return (
             <div
               key={_id}
-              className="bg-gradient-to-br from-gray-800/50 to-gray-900/30 rounded-xl p-6 border border-gray-700/50 hover:border-purple-500/30 transition-all"
+              className="bg-gradient-to-br from-gray-800/50 to-gray-900/30 rounded-2xl p-6 border border-gray-700/50 shadow-lg hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center space-x-4">
                   <div className="relative">
                     <img
                       alt={`${firstName} ${lastName}`}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-purple-500/30"
+                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-purple-500/30"
                       src={
                         photoUrl ||
                         "https://cdn-icons-png.flaticon.com/512/149/149071.png"
@@ -168,18 +172,16 @@ const Requests = () => {
                     {title && <p className="text-gray-400 text-sm">{title}</p>}
                     <div className="flex items-center text-gray-400 text-xs mt-1">
                       <Clock className="h-3 w-3 mr-1" />
-                      <span>
-                        Requested {new Date(createdAt).toLocaleDateString()}
-                      </span>
+                      <span>Requested {formatTime(createdAt)}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex space-x-3">
+                <div className="flex flex-wrap gap-3">
                   <button
                     onClick={() => reviewRequest("rejected", _id)}
                     disabled={processingId === _id}
-                    className={`px-5 py-2 rounded-lg flex items-center space-x-2 ${
+                    className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
                       processingId === _id
                         ? "bg-gray-700 text-gray-400"
                         : "bg-gradient-to-r from-red-600/80 to-red-700/80 text-white hover:from-red-700/80 hover:to-red-800/80"
@@ -198,7 +200,7 @@ const Requests = () => {
                   <button
                     onClick={() => reviewRequest("accepted", _id)}
                     disabled={processingId === _id}
-                    className={`px-5 py-2 rounded-lg flex items-center space-x-2 ${
+                    className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
                       processingId === _id
                         ? "bg-gray-700 text-gray-400"
                         : "bg-gradient-to-r from-green-600/80 to-green-700/80 text-white hover:from-green-700/80 hover:to-green-800/80"
