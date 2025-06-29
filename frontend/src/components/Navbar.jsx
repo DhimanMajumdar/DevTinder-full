@@ -6,6 +6,7 @@ import {
   LogOut,
   ChevronDown,
   ChevronUp,
+  Home, // Added Feed icon (using Home as feed icon)
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +19,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  console.log(user);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -38,10 +40,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
               <Code className="h-8 w-8 text-purple-400 hover:text-purple-300 transition-colors" />
-              <span
-                className="ml-2 text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-blue-300 transition-all cursor-pointer"
-                onClick={() => navigate("/")}
-              >
+              <span className="ml-2 text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-blue-300 transition-all cursor-pointer">
                 DevFusion
               </span>
             </div>
@@ -54,6 +53,16 @@ const Navbar = () => {
                 {/* Large Screen - Name + Icons + Photo */}
                 <div className="hidden md:flex items-center space-x-6">
                   <div className="flex items-center space-x-4">
+                    <div className="relative group">
+                      <Home
+                        className="h-6 w-6 text-gray-300 hover:text-yellow-400 cursor-pointer transition-all transform group-hover:scale-110"
+                        onClick={() => navigate("/feed")}
+                      />
+                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-400 group-hover:text-yellow-300 transition-all opacity-0 group-hover:opacity-100">
+                        Feed
+                      </span>
+                    </div>
+
                     <div className="relative group">
                       <User
                         className="h-6 w-6 text-gray-300 hover:text-purple-400 cursor-pointer transition-all transform group-hover:scale-110"
@@ -145,6 +154,13 @@ const Navbar = () => {
                             {user.emailId}
                           </p>
                         </div>
+                        <button
+                          className="flex items-center w-full px-4 py-3 text-sm text-gray-200 hover:bg-gray-700/50 transition-colors"
+                          onClick={() => navigate("/feed")}
+                        >
+                          <Home className="h-4 w-4 mr-3 text-yellow-400" />
+                          Feed
+                        </button>
                         <button
                           className="flex items-center w-full px-4 py-3 text-sm text-gray-200 hover:bg-gray-700/50 transition-colors"
                           onClick={() => navigate("/profile")}
