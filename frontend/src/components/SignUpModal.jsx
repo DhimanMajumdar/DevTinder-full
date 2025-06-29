@@ -1,13 +1,78 @@
 import { useNavigate } from "react-router-dom";
-import { X, Code, Mail, Key } from "lucide-react";
+import { X, Code, Mail, Key, Loader2 } from "lucide-react";
+import { useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 
 const SignUpModal = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    emailId: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+
+    if (errors[id]) {
+      setErrors((prev) => ({
+        ...prev,
+        [id]: "",
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError("");
+
+    try {
+      setIsSubmitting(true);
+
+      const response = await axios.post(
+        BASE_URL + "/signup",
+        {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          emailId: formData.emailId,
+          password: formData.password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 201 || response.status === 200) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      if (error.response) {
+        if (error.response.status === 409) {
+          setSubmitError("Email already in use");
+        } else {
+          setSubmitError("Signup failed. Please try again.");
+        }
+      } else {
+        setSubmitError("Network error. Please check your connection.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
       <div className="bg-gray-900 rounded-xl max-w-md w-full p-6 border border-gray-800 relative">
-        {/* Close Button */}
         <button
           onClick={() => navigate("/")}
           className="absolute top-3 right-3 text-gray-400 hover:text-white"
@@ -23,42 +88,63 @@ const SignUpModal = () => {
           </p>
         </div>
 
-        <form className="space-y-4">
+        {submitError && (
+          <div className="mb-4 p-3 bg-red-900/30 text-red-300 text-sm rounded-md border border-red-800/50">
+            {submitError}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label
-                htmlFor="first-name"
+                htmlFor="firstName"
                 className="block text-xs text-gray-300 mb-1"
               >
                 First Name
               </label>
               <input
                 type="text"
-                id="first-name"
-                required
-                className="bg-gray-800 border border-gray-700 focus:ring-purple-500 focus:border-purple-500 w-full py-2 px-3 rounded-md text-sm text-white"
+                id="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className={`bg-gray-800 border ${
+                  errors.firstName ? "border-red-500" : "border-gray-700"
+                } focus:ring-purple-500 focus:border-purple-500 w-full py-2 px-3 rounded-md text-sm text-white`}
                 placeholder="John"
               />
+              {errors.firstName && (
+                <p className="mt-1 text-xs text-red-400">{errors.firstName}</p>
+              )}
             </div>
             <div>
               <label
-                htmlFor="last-name"
+                htmlFor="lastName"
                 className="block text-xs text-gray-300 mb-1"
               >
                 Last Name
               </label>
               <input
                 type="text"
-                id="last-name"
-                required
-                className="bg-gray-800 border border-gray-700 focus:ring-purple-500 focus:border-purple-500 w-full py-2 px-3 rounded-md text-sm text-white"
+                id="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className={`bg-gray-800 border ${
+                  errors.lastName ? "border-red-500" : "border-gray-700"
+                } focus:ring-purple-500 focus:border-purple-500 w-full py-2 px-3 rounded-md text-sm text-white`}
                 placeholder="Doe"
               />
+              {errors.lastName && (
+                <p className="mt-1 text-xs text-red-400">{errors.lastName}</p>
+              )}
             </div>
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-xs text-gray-300 mb-1">
+            <label
+              htmlFor="emailId"
+              className="block text-xs text-gray-300 mb-1"
+            >
               Email Address
             </label>
             <div className="relative">
@@ -67,11 +153,17 @@ const SignUpModal = () => {
               </div>
               <input
                 type="email"
-                id="email"
-                required
-                className="bg-gray-800 border border-gray-700 focus:ring-purple-500 focus:border-purple-500 w-full pl-9 py-2 rounded-md text-sm text-white"
+                id="emailId"
+                value={formData.emailId}
+                onChange={handleChange}
+                className={`bg-gray-800 border ${
+                  errors.emailId ? "border-red-500" : "border-gray-700"
+                } focus:ring-purple-500 focus:border-purple-500 w-full pl-9 py-2 rounded-md text-sm text-white`}
                 placeholder="you@example.com"
               />
+              {errors.emailId && (
+                <p className="mt-1 text-xs text-red-400">{errors.emailId}</p>
+              )}
             </div>
           </div>
 
@@ -89,37 +181,32 @@ const SignUpModal = () => {
               <input
                 type="password"
                 id="password"
-                required
-                className="bg-gray-800 border border-gray-700 focus:ring-purple-500 focus:border-purple-500 w-full pl-9 py-2 rounded-md text-sm text-white"
+                value={formData.password}
+                onChange={handleChange}
+                className={`bg-gray-800 border ${
+                  errors.password ? "border-red-500" : "border-gray-700"
+                } focus:ring-purple-500 focus:border-purple-500 w-full pl-9 py-2 rounded-md text-sm text-white`}
                 placeholder="••••••••"
               />
+              {errors.password && (
+                <p className="mt-1 text-xs text-red-400">{errors.password}</p>
+              )}
             </div>
-          </div>
-
-          <div className="flex items-start">
-            <input
-              id="terms"
-              type="checkbox"
-              required
-              className="h-4 w-4 text-purple-600 border-gray-600 rounded focus:ring-purple-500"
-            />
-            <label htmlFor="terms" className="ml-2 text-xs text-gray-300">
-              I agree to the{" "}
-              <a href="#" className="text-purple-400 hover:text-purple-300">
-                Terms
-              </a>{" "}
-              and{" "}
-              <a href="#" className="text-purple-400 hover:text-purple-300">
-                Privacy Policy
-              </a>
-            </label>
           </div>
 
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 rounded-md text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:ring-2 focus:ring-purple-500"
+            disabled={isSubmitting}
+            className="w-full flex justify-center py-2 px-4 rounded-md text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:ring-2 focus:ring-purple-500 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Create Account
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              "Create Account"
+            )}
           </button>
         </form>
 
