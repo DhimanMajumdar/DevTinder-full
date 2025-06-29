@@ -15,13 +15,13 @@ const Footer = () => {
 
           {/* Social Links */}
           <div className="flex space-x-4">
-            <a href="#" className="text-gray-400 hover:text-white">
+            <a className="text-gray-400 hover:text-white">
               <Twitter className="h-4 w-4" />
             </a>
-            <a href="#" className="text-gray-400 hover:text-white">
+            <a className="text-gray-400 hover:text-white">
               <Github className="h-4 w-4" />
             </a>
-            <a href="#" className="text-gray-400 hover:text-white">
+            <a className="text-gray-400 hover:text-white">
               <Linkedin className="h-4 w-4" />
             </a>
           </div>
