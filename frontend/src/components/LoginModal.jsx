@@ -1,13 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { X, Code, Mail, Key } from "lucide-react";
+import { useState } from "react";
+import axios from "axios";
 
 const LoginModal = () => {
   const navigate = useNavigate();
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent page reload
+
+    try {
+      const res = await axios.post(
+        "http://localhost:7777/login",
+        { emailId, password },
+        { withCredentials: true } // Important for cookies
+      );
+      console.log(res.data);
+      navigate("/profile"); // Redirect after successful login
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+      alert("Login failed: " + (error.response?.data || error.message));
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
       <div className="bg-gray-900 rounded-xl max-w-md w-full p-8 border border-gray-800 relative">
-        {/* Close Button */}
         <button
           onClick={() => navigate("/")}
           className="absolute top-4 right-4 text-gray-400 hover:text-white"
@@ -21,7 +41,7 @@ const LoginModal = () => {
           <p className="mt-2 text-gray-400">Login to your DevFusion account</p>
         </div>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleLogin}>
           <div>
             <label
               htmlFor="email"
@@ -36,9 +56,11 @@ const LoginModal = () => {
               <input
                 type="email"
                 id="email"
+                value={emailId}
                 required
-                className="bg-gray-800 border border-gray-700 focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 py-3 rounded-md text-white"
+                className="bg-gray-800 border border-gray-700 block w-full pl-10 py-3 rounded-md text-white"
                 placeholder="you@example.com"
+                onChange={(e) => setEmailId(e.target.value)}
               />
             </div>
           </div>
@@ -57,16 +79,18 @@ const LoginModal = () => {
               <input
                 type="password"
                 id="password"
+                value={password}
                 required
-                className="bg-gray-800 border border-gray-700 focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 py-3 rounded-md text-white"
+                className="bg-gray-800 border border-gray-700 block w-full pl-10 py-3 rounded-md text-white"
                 placeholder="••••••••"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full flex justify-center py-3 px-4 rounded-md text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:ring-2 focus:ring-purple-500"
+            className="w-full flex justify-center py-3 px-4 rounded-md text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
           >
             Sign in
           </button>
