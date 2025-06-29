@@ -333,7 +333,7 @@ const EditProfile = ({ user }) => {
             <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-500 rounded-full mr-1 sm:mr-2 animate-pulse"></span>
             Live Preview
           </h3>
-          <UserCard user={formData} />
+          <UserCard user={formData} showActions={false} />
         </div>
       </div>
     </div>

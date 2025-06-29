@@ -14,9 +14,10 @@ import {
 } from "lucide-react";
 import { removeUserFromFeed } from "../utils/feedSlice";
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, showActions = true }) => {
   const dispatch = useDispatch();
   const { _id } = user;
+
   const handleSendRequest = async (status, userId) => {
     try {
       const res = await axios.post(
@@ -29,6 +30,7 @@ const UserCard = ({ user }) => {
       console.log(error);
     }
   };
+
   return (
     <div className="max-w-sm mx-auto bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-700 hover:border-purple-500/50 transition-all duration-300">
       <div className="relative h-40 bg-gradient-to-r from-purple-900/40 to-blue-900/40">
@@ -122,22 +124,24 @@ const UserCard = ({ user }) => {
           )}
         </div>
 
-        <div className="flex space-x-2">
-          <button
-            className="flex-1 flex items-center justify-center py-2 px-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition-colors border border-gray-700 hover:border-gray-600"
-            onClick={() => handleSendRequest("ignored", _id)}
-          >
-            <X className="h-4 w-4 mr-1" />
-            Ignore
-          </button>
-          <button
-            className="flex-1 flex items-center justify-center py-2 px-3 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 text-xs font-medium transition-all shadow-lg hover:shadow-purple-500/20"
-            onClick={() => handleSendRequest("interested", _id)}
-          >
-            <Heart className="h-4 w-4 mr-1" />
-            Connect
-          </button>
-        </div>
+        {showActions && (
+          <div className="flex space-x-2">
+            <button
+              className="flex-1 flex items-center justify-center py-2 px-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium transition-colors border border-gray-700 hover:border-gray-600"
+              onClick={() => handleSendRequest("ignored", _id)}
+            >
+              <X className="h-4 w-4 mr-1" />
+              Ignore
+            </button>
+            <button
+              className="flex-1 flex items-center justify-center py-2 px-3 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 text-xs font-medium transition-all shadow-lg hover:shadow-purple-500/20"
+              onClick={() => handleSendRequest("interested", _id)}
+            >
+              <Heart className="h-4 w-4 mr-1" />
+              Connect
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
