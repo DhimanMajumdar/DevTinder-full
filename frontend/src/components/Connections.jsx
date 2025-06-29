@@ -69,7 +69,7 @@ const Connections = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="flex flex-col items-center mb-12">
           <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500 mb-3">
-            Your Professional Network
+            MY CONNECTIONS
           </h1>
           <div className="w-32 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full opacity-80"></div>
         </div>
@@ -163,7 +163,7 @@ const Connections = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       <div className="flex flex-col items-center mb-12">
         <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500 mb-3">
-          Your Professional Network
+          MY CONNECTIONS
         </h1>
         <div className="w-32 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full opacity-80"></div>
       </div>

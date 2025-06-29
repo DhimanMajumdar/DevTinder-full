@@ -20,17 +20,8 @@ const HeroSection = () => {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
-            <button
-              onClick={() => navigate("/signup")}
-              className="px-8 py-3 cursor-pointer border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 md:py-4 md:text-lg md:px-10"
-            >
-              Get Started
-            </button>
-            <button
-              onClick={() => navigate("/login")}
-              className="px-8 py-3 cursor-pointer border border-gray-700 text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10"
-            >
-              Existing User
+            <button className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 md:py-4 md:text-lg md:px-10">
+              DevFusion — Uniting Developers, Igniting Innovation
             </button>
           </div>
 
