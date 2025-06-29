@@ -26,6 +26,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
 userRouter.get("/user/connections", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
+
     const connectionRequests = await ConnectionRequest.find({
       $or: [
         { toUserId: loggedInUser._id, status: "accepted" },
@@ -34,18 +35,19 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     })
       .populate("fromUserId", USER_SAFE_DATA)
       .populate("toUserId", USER_SAFE_DATA);
+
+    console.log(connectionRequests);
+
     const data = connectionRequests.map((row) => {
       if (row.fromUserId._id.toString() === loggedInUser._id.toString()) {
         return row.toUserId;
       }
       return row.fromUserId;
     });
-    res.json({
-      message: "Connections fetched successfully",
-      data: data,
-    });
-  } catch (error) {
-    res.status(400).send("Something went wrong!!" + error.message);
+
+    res.json({ data });
+  } catch (err) {
+    res.status(400).send({ message: err.message });
   }
 });
 
