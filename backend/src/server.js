@@ -6,6 +6,8 @@ const dotenv = require("dotenv").config();
 
 const app = express();
 
+require("./utils/cronjob.js");
+
 // CORS - This MUST come before routes/middleware
 app.use(
   cors({
