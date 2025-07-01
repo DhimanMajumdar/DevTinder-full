@@ -4,6 +4,8 @@ const { userAuth } = require("../middleware/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 
+const sendEmail = require("../utils/sendEmail");
+
 // sending a connection request
 requestRouter.post(
   "/request/send/:status/:toUserId",
@@ -45,6 +47,13 @@ requestRouter.post(
       });
 
       const data = await connectionRequest.save();
+      const emailRes = await sendEmail.run(
+        "A new friend request from " + req.user.firstName,
+        req.user.firstName + " is " + status + " in " + toUser.firstName,
+        "2k22.csaiml.2211562@gmail.com" // Replace with verified email
+      );
+
+      console.log(emailRes);
 
       res.json({
         message:
