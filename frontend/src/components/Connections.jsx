@@ -281,7 +281,10 @@ const Connections = () => {
                   )}
                 </div>
 
-                <Link className="flex items-center px-5 py-2.5 bg-gradient-to-r from-purple-600/80 to-blue-600/80 rounded-xl text-white hover:from-purple-700/80 hover:to-blue-700/80 transition-all shadow-md hover:shadow-blue-500/30">
+                <Link
+                  to={"/chat/" + _id}
+                  className="flex items-center px-5 py-2.5 bg-gradient-to-r from-purple-600/80 to-blue-600/80 rounded-xl text-white hover:from-purple-700/80 hover:to-blue-700/80 transition-all shadow-md hover:shadow-blue-500/30"
+                >
                   <MessageSquare className="h-4 w-4 mr-2" />
                   Message
                 </Link>

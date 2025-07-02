@@ -32,7 +32,7 @@ const UserCard = ({ user, showActions = true }) => {
   };
 
   return (
-    <div className="max-w-sm mx-auto bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-700 hover:border-purple-500/50 transition-all duration-300">
+    <div className="max-w-sm mx-auto bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl mb-4 overflow-hidden shadow-xl border border-gray-700 hover:border-purple-500/50 transition-all duration-300">
       <div className="relative h-40 bg-gradient-to-r from-purple-900/40 to-blue-900/40">
         <div className="absolute top-3 right-3 flex space-x-2">
           <div className="p-1.5 bg-gray-800/80 rounded-lg backdrop-blur-sm">
