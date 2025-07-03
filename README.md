@@ -1,15 +1,21 @@
-🚀 DevFusion — Connect, Collaborate & Code
+# 🚀 DevFusion — Connect, Collaborate & Code
+
+<div align="center">
+  <img src="https://devfusion.co.in/preview.jpg" alt="DevFusion Preview" width="800">
+</div>
+
+**DevFusion** is a premium social platform for developers to connect, chat, and collaborate — built with performance, scalability & beautiful design in mind.
+
+🌐 **Live Demo:** [https://devfusion.co.in](https://devfusion.co.in)
+
+---
 
 
-DevFusion is your one-stop social platform for developers to connect, chat, and collaborate — crafted with performance, scalability & premium design.
 
-🌐 Live Demo: https://devfusion.co.in
+---
 
+## 🏗️ Project Architecture
 
-🏗️ Project Architecture
-mermaid
-Copy
-Edit
 graph TD
   subgraph Frontend [React + Vite + Tailwind]
     A[User Interface] --> B[API Calls via Axios]
@@ -28,70 +34,89 @@ graph TD
     C --> H
     H --> Internet
   end
+
 ✨ Key Features
 ✅ Developer Profiles & Connections
 ✅ Realtime Chat via Socket.io
-✅ Secure JWT & Cookie Authentication
+✅ Secure Authentication (JWT & Cookies)
 ✅ Cron Jobs for Automation
 ✅ Amazon SES for Transactional Emails
-✅ Premium, Responsive UI with TailwindCSS
+✅ Premium UI with TailwindCSS
 ✅ Fully Deployed on AWS EC2 with Nginx
 
 ⚙️ Tech Stack
-Frontend: React.js, Redux Toolkit, TailwindCSS, Vite
+Frontend:React.js, Redux Toolkit, TailwindCSS, Vite, Lucide Icons
+Backend: Node.js, Express.js
+MongoDB (Mongoose)
+Socket.io
+JWT Authentication
+Node.js
+Express.js
+MongoDB (Mongoose)
+Socket.io
+JWT Authentication
 
-Backend: Node.js, Express.js, MongoDB (Mongoose), Socket.io
+Deployment:
 
-Deployment: AWS EC2 Ubuntu, Nginx, PM2, Let's Encrypt SSL
+AWS EC2 (Ubuntu)
 
-Others: Amazon SES, dotenv, cron, axios
+Nginx Reverse Proxy
+
+PM2 Process Manager
+
+Let's Encrypt SSL
+
+Services:
+
+Amazon SES (Emails)
+
+Cron Jobs (Automation)
 
 🔧 Local Setup
-Clone Repositories:
+Prerequisites
+Node.js (v16+)
+
+MongoDB Atlas URI
+
+Git
+
+Installation
+Clone repositories:
 
 bash
 Copy
 Edit
-git clone <your-backend-repo>
-git clone <your-frontend-repo>
+git clone https://github.com/yourusername/devfusion-frontend.git
+git clone https://github.com/yourusername/devfusion-backend.git
 Backend Setup:
 
 bash
 Copy
 Edit
-cd backend
+cd devfusion-backend
 npm install
-# Setup your .env with MONGODB_URI, JWT_SECRET, PORT, etc.
-npm run start
+cp .env.example .env
+# Edit .env with your credentials
+npm run dev
 Frontend Setup:
 
 bash
 Copy
 Edit
-cd frontend
+cd devfusion-frontend
 npm install
 npm run dev
 Visit: http://localhost:5173
 
-🌐 Production Setup (Quick Summary)
-✅ AWS EC2 (Ubuntu) with SSH Access
-✅ Nginx Reverse Proxy for domain & SSL
-✅ PM2 for backend service management
-✅ Frontend served via Nginx /var/www/html
-✅ Domain: https://devfusion.co.in
 
 
+💸 And yeah, bought my first domain ever for this project — feels like official dev business now!
 
 💡 Future Improvements
-Notifications System (Bell Icon)
 
-Enhanced Chat UI with Typing Indicators
+🔔 Notifications System (Real-time Alerts)
+✍️ Enhanced Chat UI with Typing Indicators
+🔍 User Search & Recommendations
+👥 Group Chats & Code Sharing
 
-User Search & Recommendations
 
-Group Chats & Code Sharing
-
-🤝 Contribute & Connect
-Pull Requests, Stars ⭐ & Feedback welcome! Let’s grow this dev community together.
-
-#️⃣ #MERN #SocketIO #AWS #ReactJS #MongoDB #FullStackProject #DeveloperCommunity
